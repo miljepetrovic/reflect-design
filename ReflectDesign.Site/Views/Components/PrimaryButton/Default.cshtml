@@ -1,0 +1,9 @@
+﻿@model LinkViewModel
+
+@if (Model is not null)
+{
+    <a href="@Model.Url" target="@Model.Target"
+        class="inline-block bg-primary text-white font-semibold py-2 px-4 rounded hover:bg-primary transition duration-300">
+        @Model.Name
+    </a>
+}

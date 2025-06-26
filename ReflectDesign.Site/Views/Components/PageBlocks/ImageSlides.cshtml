@@ -1,0 +1,78 @@
+﻿@model ImageSlidesViewModel
+
+@if (Model is not null && Model.Slides is not null && Model.Slides.Any())
+{
+    <!-- Image Carousel Section -->
+    <section class="py-20 @Model.BackgroundColor">
+        <div class="container mx-auto px-4">
+            <div class="carousel-container h-[500px] rounded-lg overflow-hidden">
+    @foreach (var slide in Model.Slides)
+    {
+                    <div class="carousel-slide active relative h-full">
+                        <div class="absolute inset-0 bg-gradient-to-r from-gray-900/70 to-gray-900/30"></div>
+                            @if (slide.BackgroundImage is not null)
+                            {
+                                <img src="@slide.BackgroundImage.Url"
+                                 alt="@slide.BackgroundImage.AlternateText" class="w-full h-full object-cover">
+                            }
+                            <div class="absolute bottom-20 left-20 max-w-lg">
+                                @if (!string.IsNullOrWhiteSpace(slide.Title))
+                                {
+                                    <h3 class="text-3xl font-bold text-white mb-4">@slide.Title</h3>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(slide.Description))
+                                {
+                                    <p class="text-gray-200 mb-6">@slide.Description</p>
+                                }
+                                @if (slide.CallToActionLink is not null)
+                                {
+                                    <a href="@slide.CallToActionLink.Url" target="@slide.CallToActionLink.Target"
+                                        class="bg-white text-gray-900 px-6 py-2 !rounded-button font-medium hover:bg-opacity-90 transition-colors duration-200 whitespace-nowrap">@slide.CallToActionLink.Name</a>
+                                }
+                            </div>
+                        </div>
+                    }
+                    <div class="carousel-dots">
+                        @for (var i = 0; i < Model.Slides.Count; i++)
+                        {
+                            var slide = Model.Slides[i];
+                            <div class="carousel-dot@(i == 0 ? " active" : "")"></div>
+                        }
+                    </div>
+                </div>
+        </div>
+        </section>
+    }
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Carousel functionality
+            let currentSlide = 0;
+            const slides = document.querySelectorAll('.carousel-slide');
+            const dots = document.querySelectorAll('.carousel-dot');
+            const totalSlides = slides.length;
+            function showSlide(index) {
+                slides.forEach(slide => slide.classList.remove('active'));
+                dots.forEach(dot => dot.classList.remove('active'));
+                slides[index].classList.add('active');
+                dots[index].classList.add('active');
+                currentSlide = index;
+            }
+            // Initialize dots click events
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => showSlide(index));
+            });
+            // Auto-advance carousel
+            function nextSlide() {
+                showSlide((currentSlide + 1) % totalSlides);
+            }
+            let slideInterval = setInterval(nextSlide, 5000);
+            // Pause on hover
+            const carouselContainer = document.querySelector('.carousel-container');
+            carouselContainer.addEventListener('mouseenter', () => {
+                clearInterval(slideInterval);
+            });
+            carouselContainer.addEventListener('mouseleave', () => {
+                slideInterval = setInterval(nextSlide, 5000);
+            });
+        });
+    </script>

@@ -1,0 +1,53 @@
+﻿@model AgreementDetailsViewModel
+
+@if (Model.Steps is not null && Model.Steps.Any())
+{
+    <!-- Process Section -->
+    <section class="py-20 @Model.BackgroundColor">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <div class="md:w-1/2 animate-slide-left">
+                    @if (!string.IsNullOrWhiteSpace(Model.Title))
+                    {
+                        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">@Model.Title</h2>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.Description))
+                    {
+                        <p class="text-gray-600 mb-8">@Model.Description</p>
+                    }
+                    <div class="space-y-8">
+                        @foreach (var step in Model.Steps)
+                        {
+                            <div class="process-step pl-10 relative">
+                                <div
+                                    class="process-number absolute left-0 top-0 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-semibold">
+                                    @step.Index</div>
+                                @if (!string.IsNullOrWhiteSpace(step.Title))
+                                {
+                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">@step.Title</h3>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(step.Description))
+                                {
+                                    <p class="text-gray-600">@step.Description</p>
+                                }
+                            </div>
+
+                        }
+                    </div>
+                    @if (Model.CallToActionLink is not null)
+                    {
+                        <a href="@Model.CallToActionLink.Url" target="@Model.CallToActionLink.Target"
+                            class=" inline-block mt-12 bg-primary text-white px-8 py-3 !rounded-button font-medium hover:bg-opacity-90 transition-colors duration-200 whitespace-nowrap">@Model.CallToActionLink.Name</a>
+
+                    }
+                </div>
+                @if (Model.Image is not null)
+                {
+                    <div class="md:w-1/2 animate-slide-right">
+                        <img src="@Model.Image.Url" alt="@Model.Image.AlternateText" class="w-full h-auto rounded-lg shadow-lg">
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+}

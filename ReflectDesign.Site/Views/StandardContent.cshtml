@@ -1,0 +1,13 @@
+﻿@inherits UmbracoViewPage<StandardContentViewModel>
+
+@if (Model.HeroBanner is not null)
+{
+	@await Component.InvokeAsync(nameof(Model.HeroBanner), new { heroBanner = Model.HeroBanner })
+}
+@if (Model.Blocks is not null && Model.Blocks.Any())
+{
+	foreach (var module in Model.Blocks)
+	{
+		@await Component.InvokeAsync("PageBlocks", new { module = module })
+	}
+}

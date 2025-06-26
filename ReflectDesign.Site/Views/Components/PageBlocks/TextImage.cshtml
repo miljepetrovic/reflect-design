@@ -1,0 +1,35 @@
+﻿@model TextImageViewModel
+
+<!-- Content & Image Section -->
+<section class="py-20 @Model.BackgroundColor">
+    <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row items-center gap-12">
+            <div class="md:w-1/2 animate-slide-left">
+                @if (!string.IsNullOrWhiteSpace(Model.Surtitle))
+                {
+                    <span class="text-primary font-semibold uppercase tracking-wider">@Model.Surtitle</span>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.Title))
+                {
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mt-2 mb-6">@Model.Title</h2>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.Description))
+                {
+                    <p class="text-gray-600 mb-8 leading-relaxed">@Model.Description</p>
+                }
+                @if (Model.CallToActionLink is not null)
+                {
+                    <a href="@Model.CallToActionLink.Url" target="@Model.CallToActionLink.Target"
+                        class="bg-primary text-white px-8 py-3 !rounded-button font-medium hover:bg-opacity-90 transition-colors duration-200 whitespace-nowrap">@Model.CallToActionLink.Name</a>
+                }
+            </div>
+            @if (Model.Image is not null)
+            {
+                <div class="md:w-1/2 animate-slide-right">
+                    <img src="@Model.Image.Url" alt="@Model.Image.AlternateText"
+                        class="w-full h-auto rounded-lg shadow-lg object-cover">
+                </div>
+            }
+        </div>
+    </div>
+</section>

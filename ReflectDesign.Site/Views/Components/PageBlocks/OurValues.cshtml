@@ -1,0 +1,42 @@
+﻿@model OurValuesViewModel
+
+<!-- Why Choose Us Section -->
+<section class="py-20 @Model.BackgroundColor">
+    <div class="container mx-auto px-4">
+        <div class="max-w-3xl mx-auto text-center mb-16 animate-slide-up">
+            @if (!string.IsNullOrWhiteSpace(Model.Title))
+            {
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">@Model.Title</h2>
+            }
+            @if (!string.IsNullOrWhiteSpace(Model.Description))
+            {
+                <p class="text-lg text-gray-600">@Model.Description</p>
+            }
+        </div>
+        @if (Model.Items.Any())
+        {
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-@Model.Items.Count gap-8 animate-stagger">
+                @foreach (var item in Model.Items)
+                {
+                    <div class="feature-card bg-white p-8 rounded-lg shadow-md">
+                        @if (!string.IsNullOrWhiteSpace(item.Icon))
+                        {
+                            <div
+                                class="w-16 h-16 bg-primary bg-opacity-10 rounded-full flex items-center justify-center mb-6 feature-icon">
+                                <i class="ri-@item.Icon ri-xl text-primary"></i>
+                            </div>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(item.Title))
+                        {
+                            <h3 class="text-xl font-semibold text-gray-900 mb-3">@item.Title</h3>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(item.Description))
+                        {
+                            <p class="text-gray-600">@item.Description</p>
+                        }
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</section>

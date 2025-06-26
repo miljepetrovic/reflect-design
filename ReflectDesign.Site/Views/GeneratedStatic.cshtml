@@ -1,0 +1,1175 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Website</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { primary: '#D50000' }, borderRadius: { 'none': '0px', 'sm': '4px', DEFAULT: '8px', 'md': '12px', 'lg': '16px', 'xl': '20px', '2xl': '24px', '3xl': '32px', 'full': '9999px', 'button': '8px' } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css">
+
+</head>
+
+<body class="bg-white">
+    <!-- News Page Banner -->
+    <div class="bg-gradient-to-r from-blue-50 to-blue-100/50 py-20 mt-16">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <span class="text-primary font-semibold uppercase tracking-wider">Latest Updates</span>
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mt-4 mb-6">Company News & Insights</h1>
+                <p class="text-lg text-gray-600">Stay updated with the latest news, industry insights, and company
+                    announcements</p>
+                <!-- News Filters -->
+                <div class="mt-12 bg-white rounded-lg shadow-md p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Category Filter -->
+                        <div class="relative">
+                            <button id="categoryFilter"
+                                class="w-full bg-white border border-gray-200 px-4 py-2 !rounded-button font-medium text-left flex items-center justify-between hover:border-primary transition-colors duration-200">
+                                <span class="flex items-center">
+                                    <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                        <i class="ri-filter-line"></i>
+                                    </div>
+                                    <span id="selectedCategory">All Categories</span>
+                                </span>
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-arrow-down-s-line"></i>
+                                </div>
+                            </button>
+                            <div id="categoryDropdown"
+                                class="hidden absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-20">
+                                <div class="p-2 space-y-1">
+                                    <button class="w-full text-left px-4 py-2 rounded hover:bg-gray-50 category-option"
+                                        data-category="all">All Categories</button>
+                                    <button class="w-full text-left px-4 py-2 rounded hover:bg-gray-50 category-option"
+                                        data-category="tech">Technology</button>
+                                    <button class="w-full text-left px-4 py-2 rounded hover:bg-gray-50 category-option"
+                                        data-category="business">Business</button>
+                                    <button class="w-full text-left px-4 py-2 rounded hover:bg-gray-50 category-option"
+                                        data-category="finance">Finance</button>
+                                    <button class="w-full text-left px-4 py-2 rounded hover:bg-gray-50 category-option"
+                                        data-category="innovation">Innovation</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Date Range Filter -->
+                        <div class="relative">
+                            <button id="dateFilter"
+                                class="w-full bg-white border border-gray-200 px-4 py-2 !rounded-button font-medium text-left flex items-center justify-between hover:border-primary transition-colors duration-200">
+                                <span class="flex items-center">
+                                    <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                        <i class="ri-calendar-line"></i>
+                                    </div>
+                                    <span id="selectedDate">All Time</span>
+                                </span>
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-arrow-down-s-line"></i>
+                                </div>
+                            </button>
+                            <div id="dateDropdown"
+                                class="hidden absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-20">
+                                <div class="p-2 space-y-1">
+                                    <button class="w-full text-left px-4 py-2 rounded hover:bg-gray-50 date-option"
+                                        data-range="all">All Time</button>
+                                    <button class="w-full text-left px-4 py-2 rounded hover:bg-gray-50 date-option"
+                                        data-range="today">Today</button>
+                                    <button class="w-full text-left px-4 py-2 rounded hover:bg-gray-50 date-option"
+                                        data-range="week">This Week</button>
+                                    <button class="w-full text-left px-4 py-2 rounded hover:bg-gray-50 date-option"
+                                        data-range="month">This Month</button>
+                                    <button class="w-full text-left px-4 py-2 rounded hover:bg-gray-50 date-option"
+                                        data-range="year">This Year</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- News Grid -->
+                <div id="newsGrid" class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- News items will be dynamically inserted here -->
+                </div>
+                <!-- Pagination -->
+                <div class="mt-12 flex justify-center items-center space-x-4">
+                    <button id="prevPage"
+                        class="bg-white border border-gray-200 px-4 py-2 !rounded-button font-medium hover:border-primary hover:text-primary transition-colors duration-200 whitespace-nowrap flex items-center disabled:opacity-50 disabled:cursor-not-allowed">
+                        <div class="w-5 h-5 flex items-center justify-center mr-2">
+                            <i class="ri-arrow-left-line"></i>
+                        </div>
+                        Previous
+                    </button>
+                    <div class="flex items-center space-x-2" id="pageNumbers">
+                        <!-- Page numbers will be dynamically inserted here -->
+                    </div>
+                    <button id="nextPage"
+                        class="bg-white border border-gray-200 px-4 py-2 !rounded-button font-medium hover:border-primary hover:text-primary transition-colors duration-200 whitespace-nowrap flex items-center disabled:opacity-50 disabled:cursor-not-allowed">
+                        Next
+                        <div class="w-5 h-5 flex items-center justify-center ml-2">
+                            <i class="ri-arrow-right-line"></i>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Header -->
+    <header id="header" class="fixed top-0 left-0 w-full bg-white z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="#" class="flex items-center">
+                <img src="https://readdy.ai/api/search-image?query=modern%20minimal%20business%20logo%20design%2C%20professional%20corporate%20identity%2C%20clean%20and%20simple%20style%2C%20high%20quality%20vector%20art&width=150&height=40&seq=headerlogo&orientation=landscape"
+                    alt="Company Logo" class="h-10 w-auto">
+            </a>
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="#" class="text-gray-800 hover:text-primary font-medium transition-colors duration-200">Home</a>
+                <div class="dropdown-trigger relative">
+                    <a href="#"
+                        class="text-gray-800 hover:text-primary font-medium transition-colors duration-200 flex items-center">
+                        Products
+                        <div class="w-4 h-4 flex items-center justify-center ml-1">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </a>
+                    <div class="dropdown bg-white shadow-lg rounded p-4">
+                        <a href="#"
+                            class="block py-2 px-4 text-gray-700 hover:bg-gray-50 hover:text-primary rounded transition-colors duration-200">Product
+                            1</a>
+                        <a href="#"
+                            class="block py-2 px-4 text-gray-700 hover:bg-gray-50 hover:text-primary rounded transition-colors duration-200">Product
+                            2</a>
+                        <a href="#"
+                            class="block py-2 px-4 text-gray-700 hover:bg-gray-50 hover:text-primary rounded transition-colors duration-200">Product
+                            3</a>
+                    </div>
+                </div>
+                <div class="dropdown-trigger relative">
+                    <a href="#"
+                        class="text-gray-800 hover:text-primary font-medium transition-colors duration-200 flex items-center">
+                        Services
+                        <div class="w-4 h-4 flex items-center justify-center ml-1">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </a>
+                    <div class="dropdown bg-white shadow-lg rounded p-4">
+                        <a href="#"
+                            class="block py-2 px-4 text-gray-700 hover:bg-gray-50 hover:text-primary rounded transition-colors duration-200">Service
+                            1</a>
+                        <a href="#"
+                            class="block py-2 px-4 text-gray-700 hover:bg-gray-50 hover:text-primary rounded transition-colors duration-200">Service
+                            2</a>
+                        <a href="#"
+                            class="block py-2 px-4 text-gray-700 hover:bg-gray-50 hover:text-primary rounded transition-colors duration-200">Service
+                            3</a>
+                    </div>
+                </div>
+                <a href="#"
+                    class="text-gray-800 hover:text-primary font-medium transition-colors duration-200">About</a>
+                <a href="#"
+                    class="text-gray-800 hover:text-primary font-medium transition-colors duration-200">Contact</a>
+                <button
+                    class="bg-primary text-white px-6 py-2 !rounded-button font-medium hover:bg-opacity-90 transition-colors duration-200 whitespace-nowrap">Get
+                    Started</button>
+            </nav>
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden w-10 h-10 flex items-center justify-center text-gray-700" id="mobile-menu-button">
+                <i class="ri-menu-line ri-xl"></i>
+            </button>
+        </div>
+        <!-- Mobile Navigation -->
+        <div id="mobile-menu" class="md:hidden bg-white py-4 px-4 hidden">
+            <a href="#"
+                class="block py-3 text-gray-800 hover:text-primary font-medium border-b border-gray-100">Home</a>
+            <div class="py-3 border-b border-gray-100">
+                <div class="flex justify-between items-center text-gray-800 font-medium" id="mobile-products-trigger">
+                    <span>Products</span>
+                    <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-arrow-down-s-line"></i>
+                    </div>
+                </div>
+                <div class="hidden pl-4 mt-2 space-y-2" id="mobile-products-dropdown">
+                    <a href="#" class="block py-2 text-gray-700 hover:text-primary">Product 1</a>
+                    <a href="#" class="block py-2 text-gray-700 hover:text-primary">Product 2</a>
+                    <a href="#" class="block py-2 text-gray-700 hover:text-primary">Product 3</a>
+                </div>
+            </div>
+            <div class="py-3 border-b border-gray-100">
+                <div class="flex justify-between items-center text-gray-800 font-medium" id="mobile-services-trigger">
+                    <span>Services</span>
+                    <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-arrow-down-s-line"></i>
+                    </div>
+                </div>
+                <div class="hidden pl-4 mt-2 space-y-2" id="mobile-services-dropdown">
+                    <a href="#" class="block py-2 text-gray-700 hover:text-primary">Service 1</a>
+                    <a href="#" class="block py-2 text-gray-700 hover:text-primary">Service 2</a>
+                    <a href="#" class="block py-2 text-gray-700 hover:text-primary">Service 3</a>
+                </div>
+            </div>
+            <a href="#"
+                class="block py-3 text-gray-800 hover:text-primary font-medium border-b border-gray-100">About</a>
+            <a href="#"
+                class="block py-3 text-gray-800 hover:text-primary font-medium border-b border-gray-100">Contact</a>
+            <button
+                class="mt-4 w-full bg-primary text-white px-6 py-2 !rounded-button font-medium hover:bg-opacity-90 transition-colors duration-200 whitespace-nowrap">Get
+                Started</button>
+        </div>
+    </header>
+    <!-- News Banner -->
+    <div class="bg-primary py-2 relative overflow-hidden">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-notification-3-line text-white"></i>
+                    </div>
+                    <div class="relative overflow-hidden w-full">
+                        <div class="news-ticker flex items-center space-x-12">
+                            <div class="news-item whitespace-nowrap text-white flex items-center">
+                                <span class="bg-white/20 text-xs px-2 py-0.5 rounded mr-2">New</span>
+                                <span>Introducing our latest AI-powered analytics platform - Learn more about how it can
+                                    transform your business</span>
+                            </div>
+                            <div class="news-item whitespace-nowrap text-white flex items-center">
+                                <span class="bg-white/20 text-xs px-2 py-0.5 rounded mr-2">Event</span>
+                                <span>Join our upcoming webinar: "Digital Transformation in 2025" - Register now</span>
+                            </div>
+                            <div class="news-item whitespace-nowrap text-white flex items-center">
+                                <span class="bg-white/20 text-xs px-2 py-0.5 rounded mr-2">Update</span>
+                                <span>Security patch v2.4 is now available for all cloud services - Update today</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="text-white hover:text-white/80 transition-colors duration-200 ml-4 flex-shrink-0">
+                    <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-close-line"></i>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Hero Banner -->
+    <section class="relative h-screen flex items-center"
+        style="background-image: url('https://readdy.ai/api/search-image?query=modern%2520business%2520website%2520hero%2520background%2520with%2520gradient%2520overlay%2520and%2520abstract%2520shapes%252C%2520professional%2520clean%2520design%252C%2520soft%2520blue%2520and%2520white%2520colors%252C%2520high%2520quality%2520digital%2520art%252C%2520minimalist%2520style%252C%2520perfect%2520for%2520web%2520design%252C%2520ensure%2520text%2520will%2520be%2520readable%2520on%2520left%2520side&width=1920&height=1080&seq=hero1&orientation=landscape'); background-size: cover; background-position: center;">
+        <div class="absolute inset-0 bg-gradient-to-r from-gray-900/70 to-gray-900/30"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="max-w-3xl mx-auto text-center animate-fade-in">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">Transform Your Business with
+                    Innovative Solutions</h1>
+                <p class="text-xl text-gray-200 mb-8 leading-relaxed">We help businesses grow by providing cutting-edge
+                    technology solutions that drive results. Join thousands of satisfied customers who have transformed
+                    their operations.</p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button
+                        class="bg-primary text-white px-8 py-3 !rounded-button font-medium hover:bg-opacity-90 transition-colors duration-200 whitespace-nowrap">Get
+                        Started</button>
+                    <button
+                        class="bg-white bg-opacity-10 text-white border border-white border-opacity-30 px-8 py-3 !rounded-button font-medium hover:bg-opacity-20 transition-colors duration-200 whitespace-nowrap">Learn
+                        More</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Product Slider Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center mb-12 animate-slide-up">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Featured Products</h2>
+                <p class="text-lg text-gray-600">Discover our range of innovative solutions designed to meet your
+                    business needs</p>
+            </div>
+            <div class="relative">
+                <div class="product-slider flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory">
+                    <div
+                        class="min-w-[300px] md:min-w-[350px] snap-start bg-white rounded-lg shadow-md overflow-hidden flex-shrink-0">
+                        <div class="h-48 bg-gray-200"
+                            style="background-image: url('https://readdy.ai/api/search-image?query=modern%2520business%2520analytics%2520dashboard%2520with%2520charts%2520and%2520graphs%252C%2520clean%2520interface%252C%2520professional%2520design%252C%2520blue%2520and%2520white%2520color%2520scheme%252C%2520digital%2520product%2520visualization%252C%2520high%2520quality%2520render&width=700&height=400&seq=prod1&orientation=landscape'); background-size: cover; background-position: center;">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Business Analytics</h3>
+                            <p class="text-gray-600 mb-4">Powerful analytics platform that helps you understand your
+                                business data and make informed decisions.</p>
+                            <a href="#" class="text-primary font-medium hover:underline flex items-center">
+                                Learn more
+                                <div class="w-5 h-5 flex items-center justify-center ml-1">
+                                    <i class="ri-arrow-right-line"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div
+                        class="min-w-[300px] md:min-w-[350px] snap-start bg-white rounded-lg shadow-md overflow-hidden flex-shrink-0">
+                        <div class="h-48 bg-gray-200"
+                            style="background-image: url('https://readdy.ai/api/search-image?query=modern%2520cloud%2520computing%2520service%2520visualization%252C%2520digital%2520cloud%2520storage%2520concept%252C%2520professional%2520business%2520software%252C%2520clean%2520design%252C%2520blue%2520and%2520white%2520color%2520scheme%252C%2520high%2520quality%2520digital%2520art&width=700&height=400&seq=prod2&orientation=landscape'); background-size: cover; background-position: center;">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Cloud Solutions</h3>
+                            <p class="text-gray-600 mb-4">Secure and scalable cloud infrastructure to help your business
+                                grow without worrying about IT limitations.</p>
+                            <a href="#" class="text-primary font-medium hover:underline flex items-center">
+                                Learn more
+                                <div class="w-5 h-5 flex items-center justify-center ml-1">
+                                    <i class="ri-arrow-right-line"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div
+                        class="min-w-[300px] md:min-w-[350px] snap-start bg-white rounded-lg shadow-md overflow-hidden flex-shrink-0">
+                        <div class="h-48 bg-gray-200"
+                            style="background-image: url('https://readdy.ai/api/search-image?query=modern%2520cybersecurity%2520protection%2520visualization%252C%2520digital%2520security%2520shield%2520concept%252C%2520professional%2520business%2520software%252C%2520clean%2520design%252C%2520blue%2520and%2520white%2520color%2520scheme%252C%2520high%2520quality%2520digital%2520art&width=700&height=400&seq=prod3&orientation=landscape'); background-size: cover; background-position: center;">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Cyber Security</h3>
+                            <p class="text-gray-600 mb-4">Comprehensive security solutions to protect your business from
+                                evolving cyber threats and data breaches.</p>
+                            <a href="#" class="text-primary font-medium hover:underline flex items-center">
+                                Learn more
+                                <div class="w-5 h-5 flex items-center justify-center ml-1">
+                                    <i class="ri-arrow-right-line"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div
+                        class="min-w-[300px] md:min-w-[350px] snap-start bg-white rounded-lg shadow-md overflow-hidden flex-shrink-0">
+                        <div class="h-48 bg-gray-200"
+                            style="background-image: url('https://readdy.ai/api/search-image?query=modern%2520AI%2520machine%2520learning%2520visualization%252C%2520artificial%2520intelligence%2520concept%252C%2520professional%2520business%2520software%252C%2520clean%2520design%252C%2520blue%2520and%2520white%2520color%2520scheme%252C%2520high%2520quality%2520digital%2520art&width=700&height=400&seq=prod4&orientation=landscape'); background-size: cover; background-position: center;">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">AI Solutions</h3>
+                            <p class="text-gray-600 mb-4">Leverage the power of artificial intelligence to automate
+                                processes and gain competitive advantage.</p>
+                            <a href="#" class="text-primary font-medium hover:underline flex items-center">
+                                Learn more
+                                <div class="w-5 h-5 flex items-center justify-center ml-1">
+                                    <i class="ri-arrow-right-line"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div
+                        class="min-w-[300px] md:min-w-[350px] snap-start bg-white rounded-lg shadow-md overflow-hidden flex-shrink-0">
+                        <div class="h-48 bg-gray-200"
+                            style="background-image: url('https://readdy.ai/api/search-image?query=modern%2520digital%2520marketing%2520visualization%252C%2520online%2520advertising%2520concept%252C%2520professional%2520business%2520service%252C%2520clean%2520design%252C%2520blue%2520and%2520white%2520color%2520scheme%252C%2520high%2520quality%2520digital%2520art&width=700&height=400&seq=prod5&orientation=landscape'); background-size: cover; background-position: center;">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Digital Marketing</h3>
+                            <p class="text-gray-600 mb-4">Data-driven marketing strategies to help you reach your target
+                                audience and drive conversions.</p>
+                            <a href="#" class="text-primary font-medium hover:underline flex items-center">
+                                Learn more
+                                <div class="w-5 h-5 flex items-center justify-center ml-1">
+                                    <i class="ri-arrow-right-line"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <button id="slider-prev"
+                    class="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1/2 bg-white rounded-full shadow-lg w-10 h-10 flex items-center justify-center text-gray-700 hover:text-primary focus:outline-none z-10 md:block hidden">
+                    <i class="ri-arrow-left-s-line ri-lg"></i>
+                </button>
+                <button id="slider-next"
+                    class="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/2 bg-white rounded-full shadow-lg w-10 h-10 flex items-center justify-center text-gray-700 hover:text-primary focus:outline-none z-10 md:block hidden">
+                    <i class="ri-arrow-right-s-line ri-lg"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Image Carousel Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="carousel-container h-[500px] rounded-lg overflow-hidden">
+                <div class="carousel-slide active relative h-full">
+                    <div class="absolute inset-0 bg-gradient-to-r from-gray-900/70 to-gray-900/30"></div>
+                    <img src="https://readdy.ai/api/search-image?query=modern%2520business%2520office%2520with%2520people%2520working%252C%2520professional%2520environment%252C%2520clean%2520design%252C%2520bright%2520spacious%2520interior%252C%2520high%2520quality%2520corporate%2520photography&width=1200&height=500&seq=carousel1&orientation=landscape"
+                        alt="Modern office" class="w-full h-full object-cover">
+                    <div class="absolute bottom-20 left-20 max-w-lg">
+                        <h3 class="text-3xl font-bold text-white mb-4">Modern Workspace Solutions</h3>
+                        <p class="text-gray-200 mb-6">Create an environment where your team can thrive with our
+                            workspace optimization services.</p>
+                        <button
+                            class="bg-white text-gray-900 px-6 py-2 !rounded-button font-medium hover:bg-opacity-90 transition-colors duration-200 whitespace-nowrap">Learn
+                            More</button>
+                    </div>
+                </div>
+                <div class="carousel-slide relative h-full">
+                    <div class="absolute inset-0 bg-gradient-to-r from-gray-900/70 to-gray-900/30"></div>
+                    <img src="https://readdy.ai/api/search-image?query=digital%2520transformation%2520concept%252C%2520business%2520technology%2520integration%252C%2520futuristic%2520visualization%252C%2520professional%2520clean%2520design%252C%2520high%2520quality%2520digital%2520art&width=1200&height=500&seq=carousel2&orientation=landscape"
+                        alt="Digital transformation" class="w-full h-full object-cover">
+                    <div class="absolute bottom-20 left-20 max-w-lg">
+                        <h3 class="text-3xl font-bold text-white mb-4">Digital Transformation</h3>
+                        <p class="text-gray-200 mb-6">Embrace the future with our comprehensive digital transformation
+                            strategies.</p>
+                        <button
+                            class="bg-white text-gray-900 px-6 py-2 !rounded-button font-medium hover:bg-opacity-90 transition-colors duration-200 whitespace-nowrap">Learn
+                            More</button>
+                    </div>
+                </div>
+                <div class="carousel-slide relative h-full">
+                    <div class="absolute inset-0 bg-gradient-to-r from-gray-900/70 to-gray-900/30"></div>
+                    <img src="https://readdy.ai/api/search-image?query=global%2520business%2520network%2520concept%252C%2520international%2520connections%252C%2520world%2520map%2520visualization%252C%2520professional%2520clean%2520design%252C%2520blue%2520and%2520white%2520color%2520scheme%252C%2520high%2520quality%2520digital%2520art&width=1200&height=500&seq=carousel3&orientation=landscape"
+                        alt="Global business" class="w-full h-full object-cover">
+                    <div class="absolute bottom-20 left-20 max-w-lg">
+                        <h3 class="text-3xl font-bold text-white mb-4">Global Reach</h3>
+                        <p class="text-gray-200 mb-6">Expand your business globally with our international market entry
+                            strategies.</p>
+                        <button
+                            class="bg-white text-gray-900 px-6 py-2 !rounded-button font-medium hover:bg-opacity-90 transition-colors duration-200 whitespace-nowrap">Learn
+                            More</button>
+                    </div>
+                </div>
+                <div class="carousel-dots">
+                    <div class="carousel-dot active"></div>
+                    <div class="carousel-dot"></div>
+                    <div class="carousel-dot"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Testimonials Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center mb-16 animate-slide-up">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">What Our Clients Say</h2>
+                <p class="text-lg text-gray-600">Hear from businesses that have transformed their operations with our
+                    solutions</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-stagger">
+                <div class="testimonial-card bg-white p-8 rounded-lg shadow-md">
+                    <div class="text-primary mb-4">
+                        <i class="ri-double-quotes-l ri-3x"></i>
+                    </div>
+                    <p class="text-gray-700 mb-6 italic">"Implementing their business analytics solution has completely
+                        transformed how we make decisions. We now have real-time insights that have helped us increase
+                        revenue by 35% in just six months."</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mr-4">
+                            <i class="ri-user-3-fill ri-lg text-gray-500"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-900">Emily Richardson</h4>
+                            <p class="text-gray-600 text-sm">CEO, TechForward Inc.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card bg-white p-8 rounded-lg shadow-md">
+                    <div class="text-primary mb-4">
+                        <i class="ri-double-quotes-l ri-3x"></i>
+                    </div>
+                    <p class="text-gray-700 mb-6 italic">"Their cloud solutions have been a game-changer for our remote
+                        team. We've seen improved collaboration, faster project delivery, and significant cost savings
+                        compared to our previous infrastructure."</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mr-4">
+                            <i class="ri-user-3-fill ri-lg text-gray-500"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-900">Michael Thompson</h4>
+                            <p class="text-gray-600 text-sm">CTO, Global Solutions Ltd.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card bg-white p-8 rounded-lg shadow-md">
+                    <div class="text-primary mb-4">
+                        <i class="ri-double-quotes-l ri-3x"></i>
+                    </div>
+                    <p class="text-gray-700 mb-6 italic">"The cybersecurity package has given us peace of mind knowing
+                        our sensitive data is protected. Their team was professional, thorough, and responsive
+                        throughout the implementation process."</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mr-4">
+                            <i class="ri-user-3-fill ri-lg text-gray-500"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-900">Sarah Johnson</h4>
+                            <p class="text-gray-600 text-sm">Director, Secure Financial Group</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Why Choose Us Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center mb-16 animate-slide-up">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Businesses Choose Us</h2>
+                <p class="text-lg text-gray-600">We combine expertise, innovation, and dedication to deliver exceptional
+                    results</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 animate-stagger">
+                <div class="feature-card bg-white p-8 rounded-lg shadow-md">
+                    <div
+                        class="w-16 h-16 bg-primary bg-opacity-10 rounded-full flex items-center justify-center mb-6 feature-icon">
+                        <i class="ri-award-line ri-xl text-primary"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Industry Expertise</h3>
+                    <p class="text-gray-600">Over 15 years of experience delivering solutions across multiple
+                        industries.</p>
+                </div>
+                <div class="feature-card bg-white p-8 rounded-lg shadow-md">
+                    <div
+                        class="w-16 h-16 bg-primary bg-opacity-10 rounded-full flex items-center justify-center mb-6 feature-icon">
+                        <i class="ri-customer-service-2-line ri-xl text-primary"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">24/7 Support</h3>
+                    <p class="text-gray-600">Round-the-clock customer support to ensure your business runs smoothly.</p>
+                </div>
+                <div class="feature-card bg-white p-8 rounded-lg shadow-md">
+                    <div
+                        class="w-16 h-16 bg-primary bg-opacity-10 rounded-full flex items-center justify-center mb-6 feature-icon">
+                        <i class="ri-secure-payment-line ri-xl text-primary"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Secure Solutions</h3>
+                    <p class="text-gray-600">Enterprise-grade security measures to protect your valuable data.</p>
+                </div>
+                <div class="feature-card bg-white p-8 rounded-lg shadow-md">
+                    <div
+                        class="w-16 h-16 bg-primary bg-opacity-10 rounded-full flex items-center justify-center mb-6 feature-icon">
+                        <i class="ri-line-chart-line ri-xl text-primary"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Proven Results</h3>
+                    <p class="text-gray-600">Measurable outcomes that demonstrate the value of our solutions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rich Text Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-8">About Our Company</h2>
+                <div class="prose prose-lg max-w-none">
+                    <h1 class="text-4xl font-bold text-gray-900 mb-6">Digital Innovation Leaders</h1>
+                    <p>Founded in 2010, our company has been at the forefront of digital innovation, helping businesses
+                        transform and thrive in the digital age. We believe in the power of technology to solve complex
+                        business challenges and create new opportunities for growth.</p>
+                    <h2 class="text-3xl font-bold text-gray-900 mt-8 mb-4">Our Mission</h2>
+                    <p>To empower businesses with innovative technology solutions that drive growth, efficiency, and
+                        competitive advantage in an ever-evolving digital landscape.</p>
+                    <h3 class="text-2xl font-bold text-gray-900 mt-8 mb-4">Our Approach</h3>
+                    <ul class="list-disc pl-6 mb-6">
+                        <li>Customer-centric solutions tailored to specific business needs</li>
+                        <li>Continuous innovation and adoption of emerging technologies</li>
+                        <li>Focus on delivering measurable business outcomes</li>
+                        <li>Long-term partnerships built on trust and mutual success</li>
+                    </ul>
+                    <img src="https://readdy.ai/api/search-image?query=modern%20business%20team%20collaborating%20in%20office%20environment%2C%20professional%20meeting%2C%20diverse%20group%2C%20high%20quality%20corporate%20photography&width=800&height=400&seq=rte1&orientation=landscape"
+                        alt="Team Collaboration" class="w-full rounded-lg mb-6">
+                    <h4 class="text-xl font-bold text-gray-900 mt-8 mb-4">Technology Stack</h4>
+                    <table class="min-w-full border border-gray-200 mb-6">
+                        <thead>
+                            <tr class="bg-gray-50">
+                                <th class="px-6 py-3 border-b text-left">Technology</th>
+                                <th class="px-6 py-3 border-b text-left">Application</th>
+                                <th class="px-6 py-3 border-b text-left">Benefits</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="px-6 py-4 border-b">Cloud Computing</td>
+                                <td class="px-6 py-4 border-b">Infrastructure</td>
+                                <td class="px-6 py-4 border-b">Scalability & Flexibility</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 border-b">AI & ML</td>
+                                <td class="px-6 py-4 border-b">Analytics</td>
+                                <td class="px-6 py-4 border-b">Intelligent Insights</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 border-b">Blockchain</td>
+                                <td class="px-6 py-4 border-b">Security</td>
+                                <td class="px-6 py-4 border-b">Trust & Transparency</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <blockquote class="border-l-4 border-primary pl-4 italic my-6">
+                        <p>"Innovation is not just about technology; it's about understanding our clients' needs and
+                            delivering solutions that create real value."</p>
+                        <footer class="text-gray-600 mt-2">- James Wilson, CEO</footer>
+                    </blockquote>
+                    <h3 class="text-2xl font-bold text-gray-900 mt-8 mb-4">Industry Recognition</h3>
+                    <p>Our commitment to excellence has been recognized through numerous industry awards and
+                        certifications, including:</p>
+                    <ol class="list-decimal pl-6 mb-6">
+                        <li>ISO 27001 Certification for Information Security</li>
+                        <li>Best Innovation Award 2024</li>
+                        <li>Top Cloud Service Provider</li>
+                        <li>Excellence in Digital Transformation</li>
+                    </ol>
+                    <img src="https://readdy.ai/api/search-image?query=professional%20business%20awards%20and%20certifications%20display%2C%20elegant%20arrangement%2C%20corporate%20achievement%20showcase%2C%20high%20quality%20photography&width=800&height=400&seq=rte2&orientation=landscape"
+                        alt="Awards and Recognition" class="w-full rounded-lg">
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Process Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <div class="md:w-1/2 animate-slide-left">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">How Our Process Works</h2>
+                    <p class="text-gray-600 mb-8">We follow a structured approach to ensure successful implementation
+                        and results for your business.</p>
+                    <div class="space-y-8">
+                        <div class="process-step pl-10 relative">
+                            <div
+                                class="process-number absolute left-0 top-0 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-semibold">
+                                1</div>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Discovery & Analysis</h3>
+                            <p class="text-gray-600">We begin by understanding your business goals, challenges, and
+                                requirements through in-depth consultations.</p>
+                        </div>
+                        <div class="process-step pl-10 relative">
+                            <div
+                                class="process-number absolute left-0 top-0 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-semibold">
+                                2</div>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Solution Design</h3>
+                            <p class="text-gray-600">Our experts design a customized solution that addresses your
+                                specific needs and aligns with your business objectives.</p>
+                        </div>
+                        <div class="process-step pl-10 relative">
+                            <div
+                                class="process-number absolute left-0 top-0 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-semibold">
+                                3</div>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Implementation</h3>
+                            <p class="text-gray-600">We implement the solution with minimal disruption to your
+                                operations, ensuring a smooth transition.</p>
+                        </div>
+                        <div class="process-step pl-10 relative">
+                            <div
+                                class="process-number absolute left-0 top-0 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-semibold">
+                                4</div>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Training & Support</h3>
+                            <p class="text-gray-600">We provide comprehensive training and ongoing support to ensure you
+                                get the most value from your solution.</p>
+                        </div>
+                    </div>
+                    <button
+                        class="mt-8 bg-primary text-white px-8 py-3 !rounded-button font-medium hover:bg-opacity-90 transition-colors duration-200 whitespace-nowrap">Start
+                        Your Project</button>
+                </div>
+                <div class="md:w-1/2 animate-slide-right">
+                    <img src="https://readdy.ai/api/search-image?query=business%2520process%2520workflow%2520visualization%252C%2520step-by-step%2520implementation%2520concept%252C%2520professional%2520clean%2520design%252C%2520blue%2520and%2520white%2520color%2520scheme%252C%2520digital%2520illustration%252C%2520high%2520quality%2520render&width=600&height=600&seq=process1&orientation=squarish"
+                        alt="Our process" class="w-full h-auto rounded-lg shadow-lg">
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Card Slider Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Featured Resources</h2>
+                <p class="text-lg text-gray-600">Explore our collection of guides, whitepapers, and case studies</p>
+            </div>
+            <div class="relative">
+                <div class="resource-slider flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory">
+                    <div
+                        class="min-w-[300px] md:min-w-[400px] snap-start rounded-lg overflow-hidden flex-shrink-0 group">
+                        <div class="h-48 relative">
+                            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900/90"></div>
+                            <img src="https://readdy.ai/api/search-image?query=digital%20transformation%20guide%20cover%2C%20modern%20business%20technology%20concept%2C%20professional%20clean%20design%2C%20blue%20and%20white%20theme%2C%20high%20quality%20digital%20art&width=400&height=200&seq=resource1&orientation=landscape"
+                                alt="Digital Transformation Guide" class="w-full h-full object-cover">
+                            <div class="absolute bottom-0 left-0 p-6">
+                                <h3 class="text-xl font-semibold text-white mb-2">Digital Transformation Guide</h3>
+                                <a href="#"
+                                    class="text-white hover:text-primary transition-colors duration-200 flex items-center">
+                                    Read More
+                                    <i class="ri-arrow-right-line ml-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="min-w-[300px] md:min-w-[400px] snap-start rounded-lg overflow-hidden flex-shrink-0 group">
+                        <div class="h-48 relative">
+                            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900/90"></div>
+                            <img src="https://readdy.ai/api/search-image?query=cloud%20computing%20whitepaper%20cover%2C%20modern%20technology%20infrastructure%20concept%2C%20professional%20clean%20design%2C%20blue%20and%20white%20theme%2C%20high%20quality%20digital%20art&width=400&height=200&seq=resource2&orientation=landscape"
+                                alt="Cloud Computing Whitepaper" class="w-full h-full object-cover">
+                            <div class="absolute bottom-0 left-0 p-6">
+                                <h3 class="text-xl font-semibold text-white mb-2">Cloud Computing Whitepaper</h3>
+                                <a href="#"
+                                    class="text-white hover:text-primary transition-colors duration-200 flex items-center">
+                                    Download Now
+                                    <i class="ri-arrow-right-line ml-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="min-w-[300px] md:min-w-[400px] snap-start rounded-lg overflow-hidden flex-shrink-0 group">
+                        <div class="h-48 relative">
+                            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900/90"></div>
+                            <img src="https://readdy.ai/api/search-image?query=cybersecurity%20best%20practices%20guide%20cover%2C%20modern%20security%20concept%2C%20professional%20clean%20design%2C%20blue%20and%20white%20theme%2C%20high%20quality%20digital%20art&width=400&height=200&seq=resource3&orientation=landscape"
+                                alt="Cybersecurity Guide" class="w-full h-full object-cover">
+                            <div class="absolute bottom-0 left-0 p-6">
+                                <h3 class="text-xl font-semibold text-white mb-2">Cybersecurity Best Practices</h3>
+                                <a href="#"
+                                    class="text-white hover:text-primary transition-colors duration-200 flex items-center">
+                                    Learn More
+                                    <i class="ri-arrow-right-line ml-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="min-w-[300px] md:min-w-[400px] snap-start rounded-lg overflow-hidden flex-shrink-0 group">
+                        <div class="h-48 relative">
+                            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900/90"></div>
+                            <img src="https://readdy.ai/api/search-image?query=AI%20implementation%20case%20study%20cover%2C%20modern%20artificial%20intelligence%20concept%2C%20professional%20clean%20design%2C%20blue%20and%20white%20theme%2C%20high%20quality%20digital%20art&width=400&height=200&seq=resource4&orientation=landscape"
+                                alt="AI Case Study" class="w-full h-full object-cover">
+                            <div class="absolute bottom-0 left-0 p-6">
+                                <h3 class="text-xl font-semibold text-white mb-2">AI Implementation Case Study</h3>
+                                <a href="#"
+                                    class="text-white hover:text-primary transition-colors duration-200 flex items-center">
+                                    View Case Study
+                                    <i class="ri-arrow-right-line ml-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button id="resource-prev"
+                    class="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1/2 bg-white rounded-full shadow-lg w-10 h-10 flex items-center justify-center text-gray-700 hover:text-primary focus:outline-none z-10 md:block hidden">
+                    <i class="ri-arrow-left-s-line ri-lg"></i>
+                </button>
+                <button id="resource-next"
+                    class="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/2 bg-white rounded-full shadow-lg w-10 h-10 flex items-center justify-center text-gray-700 hover:text-primary focus:outline-none z-10 md:block hidden">
+                    <i class="ri-arrow-right-s-line ri-lg"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-16 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <a href="#" class="block mb-6">
+                        <img src="https://readdy.ai/api/search-image?query=modern%20minimal%20business%20logo%20design%2C%20professional%20corporate%20identity%2C%20clean%20and%20simple%20style%2C%20white%20version%2C%20high%20quality%20vector%20art&width=150&height=40&seq=footerlogo&orientation=landscape"
+                            alt="Company Logo" class="h-10 w-auto">
+                    </a>
+                    <p class="text-gray-400 mb-6">We provide innovative business solutions to help companies thrive in
+                        today's competitive landscape.</p>
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-center text-gray-400">
+                            <i class="ri-mail-line mr-3"></i>
+                            <a href="mailto:contact@company.com"
+                                class="hover:text-white transition-colors duration-200">contact@company.com</a>
+                        </div>
+                        <div class="flex items-center text-gray-400">
+                            <i class="ri-phone-line mr-3"></i>
+                            <a href="tel:+1234567890" class="hover:text-white transition-colors duration-200">+1 (234)
+                                567-890</a>
+                        </div>
+                        <div class="flex items-start text-gray-400">
+                            <i class="ri-map-pin-line mr-3 mt-1"></i>
+                            <span>123 Business Street, Suite 100<br>New York, NY 10001</span>
+                        </div>
+                    </div>
+                    <div class="flex space-x-4">
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition-colors duration-200">
+                            <i class="ri-facebook-fill"></i>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition-colors duration-200">
+                            <i class="ri-twitter-x-fill"></i>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition-colors duration-200">
+                            <i class="ri-linkedin-fill"></i>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition-colors duration-200">
+                            <i class="ri-instagram-fill"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-xl font-semibold mb-6">Company</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">About
+                                Us</a></li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-white transition-colors duration-200">Careers</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Case
+                                Studies</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Blog</a>
+                        </li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-white transition-colors duration-200">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xl font-semibold mb-6">Services</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Business
+                                Analytics</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Cloud
+                                Solutions</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Cyber
+                                Security</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">AI &
+                                Machine Learning</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Digital
+                                Marketing</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xl font-semibold mb-6">Support</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Help
+                                Center</a></li>
+                        <li><a href="#"
+                                class="text-gray-400 hover:text-white transition-colors duration-200">Documentation</a>
+                        </li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Community
+                                Forums</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Training
+                                Resources</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">System
+                                Status</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
+                <div class="flex space-x-6 mb-4 md:mb-0">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Terms of
+                        Service</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Cookie Policy</a>
+                </div>
+                <div class="text-gray-400">
+                    &copy; 2025 Company Name. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+    <script>
+        // News data
+        const newsData = [
+            {
+                id: 1,
+                title: "AI-Powered Analytics Platform Revolutionizes Business Intelligence",
+                category: "tech",
+                date: "2025-04-16",
+                summary: "Our new AI-powered analytics platform helps businesses make data-driven decisions with unprecedented accuracy and speed.",
+                image: "https://readdy.ai/api/search-image?query=modern%20AI%20analytics%20dashboard%20visualization%2C%20professional%20business%20interface%2C%20clean%20design%2C%20technology%20concept%2C%20high%20quality%20digital%20art&width=400&height=300&seq=news1&orientation=landscape"
+            },
+            {
+                id: 2,
+                title: "Global Expansion: New Office Opens in Singapore",
+                category: "business",
+                date: "2025-04-15",
+                summary: "Expanding our presence in Asia with a new state-of-the-art office in Singapore's business district.",
+                image: "https://readdy.ai/api/search-image?query=modern%20singapore%20office%20building%20exterior%2C%20professional%20corporate%20architecture%2C%20clean%20design%2C%20business%20district%2C%20high%20quality%20photography&width=400&height=300&seq=news2&orientation=landscape"
+            },
+            {
+                id: 3,
+                title: "Q1 2025 Financial Results Exceed Expectations",
+                category: "finance",
+                date: "2025-04-14",
+                summary: "Strong performance across all business segments leads to record-breaking first quarter results.",
+                image: "https://readdy.ai/api/search-image?query=financial%20growth%20chart%20visualization%2C%20professional%20business%20analytics%2C%20clean%20design%2C%20success%20concept%2C%20high%20quality%20digital%20art&width=400&height=300&seq=news3&orientation=landscape"
+            },
+            {
+                id: 4,
+                title: "Breakthrough in Quantum Computing Research",
+                category: "innovation",
+                date: "2025-04-13",
+                summary: "Research team achieves major milestone in quantum computing, paving the way for next-generation applications.",
+                image: "https://readdy.ai/api/search-image?query=quantum%20computing%20visualization%2C%20futuristic%20technology%20concept%2C%20professional%20clean%20design%2C%20innovation%20theme%2C%20high%20quality%20digital%20art&width=400&height=300&seq=news4&orientation=landscape"
+            },
+            {
+                id: 5,
+                title: "New Cybersecurity Partnership Announced",
+                category: "tech",
+                date: "2025-04-12",
+                summary: "Strategic partnership enhances our cybersecurity offerings with advanced threat detection capabilities.",
+                image: "https://readdy.ai/api/search-image?query=cybersecurity%20protection%20visualization%2C%20digital%20security%20concept%2C%20professional%20clean%20design%2C%20technology%20theme%2C%20high%20quality%20digital%20art&width=400&height=300&seq=news5&orientation=landscape"
+            },
+            {
+                id: 6,
+                title: "Sustainable Technology Initiative Launched",
+                category: "innovation",
+                date: "2025-04-11",
+                summary: "New initiative focuses on developing environmentally sustainable technology solutions.",
+                image: "https://readdy.ai/api/search-image?query=sustainable%20technology%20concept%2C%20green%20innovation%20visualization%2C%20professional%20clean%20design%2C%20environmental%20theme%2C%20high%20quality%20digital%20art&width=400&height=300&seq=news6&orientation=landscape"
+            },
+            {
+                id: 7,
+                title: "Digital Transformation Success Story: RetailCo",
+                category: "business",
+                date: "2025-04-10",
+                summary: "Case study reveals how RetailCo achieved 200% ROI through digital transformation.",
+                image: "https://readdy.ai/api/search-image?query=retail%20digital%20transformation%20visualization%2C%20modern%20store%20technology%2C%20professional%20clean%20design%2C%20business%20success%20concept%2C%20high%20quality%20digital%20art&width=400&height=300&seq=news7&orientation=landscape"
+            },
+            {
+                id: 8,
+                title: "Investment in AI Research & Development",
+                category: "finance",
+                date: "2025-04-09",
+                summary: "Major investment announced to accelerate AI research and development initiatives.",
+                image: "https://readdy.ai/api/search-image?query=AI%20research%20investment%20concept%2C%20technology%20funding%20visualization%2C%20professional%20clean%20design%2C%20finance%20theme%2C%20high%20quality%20digital%20art&width=400&height=300&seq=news8&orientation=landscape"
+            },
+            {
+                id: 9,
+                title: "Cloud Infrastructure Upgrade Complete",
+                category: "tech",
+                date: "2025-04-08",
+                summary: "Successfully completed major cloud infrastructure upgrade to enhance performance and security.",
+                image: "https://readdy.ai/api/search-image?query=cloud%20computing%20infrastructure%20visualization%2C%20modern%20technology%20concept%2C%20professional%20clean%20design%2C%20digital%20transformation%20theme%2C%20high%20quality%20digital%20art&width=400&height=300&seq=news9&orientation=landscape"
+            },
+            {
+                id: 10,
+                title: "Employee Innovation Program Results",
+                category: "innovation",
+                date: "2025-04-07",
+                summary: "Internal innovation program generates 50+ new product ideas and 10 patent applications.",
+                image: "https://readdy.ai/api/search-image?query=innovation%20program%20results%20visualization%2C%20creative%20business%20concept%2C%20professional%20clean%20design%2C%20employee%20innovation%20theme%2C%20high%20quality%20digital%20art&width=400&height=300&seq=news10&orientation=landscape"
+            }
+        ];
+        document.addEventListener('DOMContentLoaded', function () {
+            let currentPage = 1;
+            const itemsPerPage = 6;
+            let filteredNews = [...newsData];
+            let currentCategory = 'all';
+            let currentDateRange = 'all';
+            let currentSearch = '';
+            // Filter handlers
+            const categoryFilter = document.getElementById('categoryFilter');
+            const categoryDropdown = document.getElementById('categoryDropdown');
+            const dateFilter = document.getElementById('dateFilter');
+            const dateDropdown = document.getElementById('dateDropdown');
+            const searchInput = document.getElementById('searchInput');
+            // Toggle dropdowns
+            categoryFilter.addEventListener('click', () => {
+                categoryDropdown.classList.toggle('hidden');
+                dateDropdown.classList.add('hidden');
+            });
+            dateFilter.addEventListener('click', () => {
+                dateDropdown.classList.toggle('hidden');
+                categoryDropdown.classList.add('hidden');
+            });
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('#categoryFilter') && !e.target.closest('#categoryDropdown')) {
+                    categoryDropdown.classList.add('hidden');
+                }
+                if (!e.target.closest('#dateFilter') && !e.target.closest('#dateDropdown')) {
+                    dateDropdown.classList.add('hidden');
+                }
+            });
+            // Category filter
+            document.querySelectorAll('.category-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    currentCategory = option.dataset.category;
+                    document.getElementById('selectedCategory').textContent = option.textContent;
+                    categoryDropdown.classList.add('hidden');
+                    filterAndDisplayNews();
+                });
+            });
+            // Date filter
+            document.querySelectorAll('.date-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    currentDateRange = option.dataset.range;
+                    document.getElementById('selectedDate').textContent = option.textContent;
+                    dateDropdown.classList.add('hidden');
+                    filterAndDisplayNews();
+                });
+            });
+
+            function filterNewsByDate(news, range) {
+                const today = new Date();
+                const newsDate = new Date(news.date);
+                switch (range) {
+                    case 'today':
+                        return newsDate.toDateString() === today.toDateString();
+                    case 'week':
+                        const weekAgo = new Date(today.setDate(today.getDate() - 7));
+                        return newsDate >= weekAgo;
+                    case 'month':
+                        return newsDate.getMonth() === today.getMonth() && newsDate.getFullYear() === today.getFullYear();
+                    case 'year':
+                        return newsDate.getFullYear() === today.getFullYear();
+                    default:
+                        return true;
+                }
+            }
+            function filterAndDisplayNews() {
+                filteredNews = newsData.filter(news => {
+                    const matchesCategory = currentCategory === 'all' || news.category === currentCategory;
+                    const matchesDate = filterNewsByDate(news, currentDateRange);
+                    return matchesCategory && matchesDate;
+                });
+                currentPage = 1;
+                displayNews();
+                updatePagination();
+            }
+            function displayNews() {
+                const newsGrid = document.getElementById('newsGrid');
+                const startIndex = (currentPage - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+                const currentNews = filteredNews.slice(startIndex, endIndex);
+                newsGrid.innerHTML = currentNews.map(news => `
+<div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+<img src="${news.image}" alt="${news.title}" class="w-full h-48 object-cover">
+<div class="p-6">
+<div class="flex items-center justify-between mb-4">
+<span class="text-sm text-primary font-medium">${news.category.charAt(0).toUpperCase() + news.category.slice(1)}</span>
+<span class="text-sm text-gray-500">${new Date(news.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+</div>
+<h3 class="text-xl font-semibold text-gray-900 mb-2">${news.title}</h3>
+<p class="text-gray-600 mb-4">${news.summary}</p>
+<a href="#" class="text-primary font-medium hover:underline flex items-center">
+Read more
+<div class="w-5 h-5 flex items-center justify-center ml-1">
+<i class="ri-arrow-right-line"></i>
+</div>
+</a>
+</div>
+</div>
+`).join('');
+            }
+            function updatePagination() {
+                const totalPages = Math.ceil(filteredNews.length / itemsPerPage);
+                const prevButton = document.getElementById('prevPage');
+                const nextButton = document.getElementById('nextPage');
+                const pageNumbers = document.getElementById('pageNumbers');
+                prevButton.disabled = currentPage === 1;
+                nextButton.disabled = currentPage === totalPages;
+                pageNumbers.innerHTML = '';
+                for (let i = 1; i <= totalPages; i++) {
+                    const pageButton = document.createElement('button');
+                    pageButton.className = `w-8 h-8 flex items-center justify-center rounded-full ${currentPage === i ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-50'
+                        }`;
+                    pageButton.textContent = i;
+                    pageButton.addEventListener('click', () => {
+                        currentPage = i;
+                        displayNews();
+                        updatePagination();
+                    });
+                    pageNumbers.appendChild(pageButton);
+                }
+            }
+            // Pagination handlers
+            document.getElementById('prevPage').addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    displayNews();
+                    updatePagination();
+                }
+            });
+            document.getElementById('nextPage').addEventListener('click', () => {
+                const totalPages = Math.ceil(filteredNews.length / itemsPerPage);
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    displayNews();
+                    updatePagination();
+                }
+            });
+            // Initial display
+            filterAndDisplayNews();
+            // News banner close button
+            const newsBanner = document.querySelector('.bg-primary');
+            const closeButton = newsBanner.querySelector('button');
+            closeButton.addEventListener('click', () => {
+                newsBanner.style.display = 'none';
+            });
+            // Header scroll effect
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', function () {
+                if (window.scrollY > 50) {
+                    header.classList.add('header-shadow');
+                } else {
+                    header.classList.remove('header-shadow');
+                }
+            });
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', function () {
+                mobileMenu.classList.toggle('hidden');
+            });
+            // Mobile dropdown toggles
+            const mobileProductsTrigger = document.getElementById('mobile-products-trigger');
+            const mobileProductsDropdown = document.getElementById('mobile-products-dropdown');
+            mobileProductsTrigger.addEventListener('click', function () {
+                mobileProductsDropdown.classList.toggle('hidden');
+            });
+            const mobileServicesTrigger = document.getElementById('mobile-services-trigger');
+            const mobileServicesDropdown = document.getElementById('mobile-services-dropdown');
+            mobileServicesTrigger.addEventListener('click', function () {
+                mobileServicesDropdown.classList.toggle('hidden');
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            // Product slider navigation
+            const slider = document.querySelector('.product-slider');
+            const sliderPrev = document.getElementById('slider-prev');
+            const sliderNext = document.getElementById('slider-next');
+            sliderPrev.addEventListener('click', function () {
+                slider.scrollBy({ left: -350, behavior: 'smooth' });
+            });
+            sliderNext.addEventListener('click', function () {
+                slider.scrollBy({ left: 350, behavior: 'smooth' });
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            // FAQ accordion
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const header = item.querySelector('.flex.justify-between');
+                header.addEventListener('click', function () {
+                    item.classList.toggle('active');
+                });
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            // Carousel functionality
+            let currentSlide = 0;
+            const slides = document.querySelectorAll('.carousel-slide');
+            const dots = document.querySelectorAll('.carousel-dot');
+            const totalSlides = slides.length;
+            function showSlide(index) {
+                slides.forEach(slide => slide.classList.remove('active'));
+                dots.forEach(dot => dot.classList.remove('active'));
+                slides[index].classList.add('active');
+                dots[index].classList.add('active');
+                currentSlide = index;
+            }
+            // Initialize dots click events
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => showSlide(index));
+            });
+            // Auto-advance carousel
+            function nextSlide() {
+                showSlide((currentSlide + 1) % totalSlides);
+            }
+            let slideInterval = setInterval(nextSlide, 5000);
+            // Pause on hover
+            const carouselContainer = document.querySelector('.carousel-container');
+            carouselContainer.addEventListener('mouseenter', () => {
+                clearInterval(slideInterval);
+            });
+            carouselContainer.addEventListener('mouseleave', () => {
+                slideInterval = setInterval(nextSlide, 5000);
+            });
+        });
+
+    </script>
+</body>
+
+</html>

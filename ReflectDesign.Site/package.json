@@ -1,0 +1,20 @@
+{
+  "name": "reflectdesign.site",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build:css": "npx tailwindcss-cli -i ./wwwroot/css/style.css -o ./wwwroot/css/style.min.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3"
+  },
+  "devDependencies": {
+    "tailwindcss": "^4.0.17",
+    "tailwindcss-cli": "^0.1.2"
+  }
+}

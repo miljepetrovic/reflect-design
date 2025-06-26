@@ -1,0 +1,37 @@
+﻿@inherits UmbracoViewPage<HomeViewModel>
+
+@if (Model.DisplaySplashScreen && Model.SplashScreenImage is not null)
+{
+	<div id="splash-screen">
+		<img src="@Model.SplashScreenImage.Url" alt="@Model.SplashScreenImage.AlternateText">
+	</div>
+}
+
+<div id="main-content">
+	@if (Model.HeroBanner is not null)
+	{
+		@await Component.InvokeAsync(nameof(Model.HeroBanner), new { heroBanner = Model.HeroBanner })
+	}
+	@if (Model.Blocks is not null && Model.Blocks.Any())
+	{
+		foreach (var module in Model.Blocks)
+		{
+			@await Component.InvokeAsync("PageBlocks", new { module = module })
+		}
+	}
+</div>
+
+@if (Model.DisplaySplashScreen)
+{
+	<script>
+		window.addEventListener('load', () => {
+			setTimeout(() => {
+				const splash = document.getElementById('splash-screen');
+				const mainContent = document.getElementById('main-content');
+
+				splash.classList.add('hidden');
+				mainContent.classList.add('show');
+			}, 1000);
+		});
+	</script>
+}

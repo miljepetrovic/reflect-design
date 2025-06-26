@@ -1,0 +1,171 @@
+@model CardsViewModel
+
+@if (Model.FullImage)
+{
+    <!-- Card Slider Section -->
+    <section class="py-20 @Model.BackgroundColor">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center mb-12">
+                @if (!string.IsNullOrWhiteSpace(Model.Title))
+                {
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">@Model.Title</h2>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.Description))
+                {
+                    <p class="text-lg text-gray-600">@Model.Description</p>
+                }
+            </div>
+            @if (Model.Items.Any())
+            {
+                <div class="relative">
+                    <div class="resource-slider flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory scrollbar-hide">
+                        @foreach (var card in Model.Items)
+                        {
+                            <div class="min-w-[300px] md:min-w-[400px] snap-start rounded-lg overflow-hidden flex-shrink-0 group">
+                                <div class="h-48 relative">
+                                    <div class="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900/90"></div>
+                                    @if (card.Image is not null)
+                                    {
+                                        <img src="@card.Image.Url" alt="@card.Image.AlternateText" class="w-full h-full object-cover">
+                                    }
+                                    <div class="absolute bottom-0 left-0 p-6">
+                                        @if (!string.IsNullOrWhiteSpace(card.Title))
+                                        {
+                                            <h3 class="text-xl font-semibold text-white mb-2">@card.Title</h3>
+                                        }
+                                        @if (card.CallToActionLink is not null)
+                                        {
+                                            <a href="@card.CallToActionLink.Url" target="@card.CallToActionLink.Target"
+                                                class="text-white hover:text-primary transition-colors duration-200 flex items-center">
+                                                @card.CallToActionLink.Name
+                                                <i class="ri-arrow-right-line ml-2"></i>
+                                            </a>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <button id="resource-prev"
+                        class="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1/2 bg-white rounded-full shadow-lg w-10 h-10 flex items-center justify-center text-gray-700 hover:text-primary focus:outline-none z-10 md:block hidden">
+                        <i class="ri-arrow-left-s-line ri-lg"></i>
+                    </button>
+                    <button id="resource-next"
+                        class="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/2 bg-white rounded-full shadow-lg w-10 h-10 flex items-center justify-center text-gray-700 hover:text-primary focus:outline-none z-10 md:block hidden">
+                        <i class="ri-arrow-right-s-line ri-lg"></i>
+                    </button>
+                </div>
+            }
+        </div>
+    </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Resource slider navigation
+            const resourceSlider = document.querySelector('.resource-slider');
+            const resourcePrev = document.getElementById('resource-prev');
+            const resourceNext = document.getElementById('resource-next');
+            if (resourcePrev && resourceNext) {
+                resourcePrev.addEventListener('click', function () {
+                    resourceSlider.scrollBy({ left: -400, behavior: 'smooth' });
+                });
+                resourceNext.addEventListener('click', function () {
+                    resourceSlider.scrollBy({ left: 400, behavior: 'smooth' });
+                });
+            }
+            // Animation on scroll
+            const animatedElements = document.querySelectorAll('.animate-slide-up, .animate-slide-left, .animate-slide-right, .animate-stagger');
+            function checkIfInView() {
+                animatedElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const elementVisible = 150;
+                    if (elementTop < window.innerHeight - elementVisible) {
+                        element.classList.add('active');
+                    }
+                });
+            }
+            // Initial check
+            checkIfInView();
+            // Check on scroll
+            window.addEventListener('scroll', checkIfInView);
+        });
+    </script>
+}
+else
+{
+    <!-- Product Slider Section -->
+    <section class="py-20 @Model.BackgroundColor">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center mb-12">
+                @if (!string.IsNullOrWhiteSpace(Model.Title))
+                {
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">@Model.Title</h2>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.Description))
+                {
+                    <p class="text-lg text-gray-600">@Model.Description</p>
+                }
+            </div>
+            @if (Model.Items.Any())
+            {
+                <div class="relative">
+                    <div class="product-slider flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory">
+                        @foreach (var card in Model.Items)
+                        {
+                            <div
+                                class="min-w-[300px] md:min-w-[350px] snap-start bg-white rounded-lg shadow-md overflow-hidden flex-shrink-0">
+                                @if (card.Image is not null)
+                                {
+                                    <div class="h-48 bg-gray-200"
+                                        style="background-image: url('@card.Image.Url'); background-size: cover; background-position: center;">
+                                    </div>
+                                }
+                                <div class="p-6">
+                                    @if (!string.IsNullOrWhiteSpace(card.Title))
+                                    {
+                                        <h3 class="text-xl font-semibold text-gray-900 mb-2">@card.Title</h3>
+                                    }
+                                    @if (!string.IsNullOrWhiteSpace(card.Description))
+                                    {
+                                        <p class="text-gray-600 mb-4">@card.Description</p>
+                                    }
+                                    @if (card.CallToActionLink is not null)
+                                    {
+                                        <a href="@card.CallToActionLink.Url" target="@card.CallToActionLink.Target"
+                                            class="text-primary font-medium hover:underline flex items-center">
+                                            @card.CallToActionLink.Name
+                                            <div class="w-5 h-5 flex items-center justify-center ml-1">
+                                                <i class="ri-arrow-right-line"></i>
+                                            </div>
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <button id="slider-prev"
+                        class="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1/2 bg-white rounded-full shadow-lg w-10 h-10 flex items-center justify-center text-gray-700 hover:text-primary focus:outline-none z-10 md:block hidden">
+                        <i class="ri-arrow-left-s-line ri-lg"></i>
+                    </button>
+                    <button id="slider-next"
+                        class="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/2 bg-white rounded-full shadow-lg w-10 h-10 flex items-center justify-center text-gray-700 hover:text-primary focus:outline-none z-10 md:block hidden">
+                        <i class="ri-arrow-right-s-line ri-lg"></i>
+                    </button>
+                </div>
+            }
+        </div>
+    </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Product slider navigation
+            const slider = document.querySelector('.product-slider');
+            const sliderPrev = document.getElementById('slider-prev');
+            const sliderNext = document.getElementById('slider-next');
+            sliderPrev.addEventListener('click', function () {
+                slider.scrollBy({ left: -350, behavior: 'smooth' });
+            });
+            sliderNext.addEventListener('click', function () {
+                slider.scrollBy({ left: 350, behavior: 'smooth' });
+            });
+        });
+    </script>
+}

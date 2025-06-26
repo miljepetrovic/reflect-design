@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles that go beyond Tailwind */
+
+/* Smooth transitions for dropdowns */
+.group-hover\:block {
+    transition: opacity 0.2s, visibility 0.2s;
+  }
+  
+  /* Ensure images don't break layout */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Fallback for placeholder images */
+  img[src*="placeholder.svg"] {
+    background-color: #f3f4f6;
+  }
+  
+  /* Carousel styles */
+  .carousel-track {
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .carousel-slide {
+    min-width: 0;
+  }
+  
+  @media (max-width: 768px) {
+    .carousel-slide {
+      width: 100% !important;
+    }
+  }
+  
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .carousel-slide {
+      width: 50% !important;
+    }
+  }
+  
+  

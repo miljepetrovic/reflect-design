@@ -1,0 +1,46 @@
+﻿@model TestimonialsViewModel
+
+@if (Model.Items is not null && Model.Items.Any())
+{
+    <!-- Testimonials Section -->
+    <section class="py-20 @Model.BackgroundColor">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center mb-16 animate-slide-up">
+                @if (!string.IsNullOrWhiteSpace(Model.Title))
+                {
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">@Model.Title</h2>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.Description))
+                {
+                    <p class="text-lg text-gray-600">@Model.Description</p>
+                }
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-stagger">
+                @foreach (var item in Model.Items)
+                {
+                    <div class="testimonial-card bg-white p-8 rounded-lg shadow-md">
+                        <div class="text-primary mb-4">
+                            <i class="ri-double-quotes-l ri-3x"></i>
+                        </div>
+                        @if (!string.IsNullOrWhiteSpace(item.Text))
+                        {
+                            <p class="text-gray-700 mb-6 italic">"@item.Text"</p>
+                        }
+         <div class="flex items-center">
+                            <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mr-4">
+                                <i class="ri-user-3-fill ri-lg text-gray-500"></i>
+                            </div>
+                            <div>
+                                @if (!string.IsNullOrWhiteSpace(item.Author))
+                                {
+                                    <h4 class="font-semibold text-gray-900">@item.Author</h4>
+                                }
+                                @* <p class="text-gray-600 text-sm">CEO, TechForward Inc.</p> *@
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+}

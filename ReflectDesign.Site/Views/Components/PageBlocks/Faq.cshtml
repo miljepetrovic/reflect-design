@@ -1,0 +1,56 @@
+﻿@model FaqViewModel
+
+@if (Model.Items is not null && Model.Items.Any())
+{
+    <!-- FAQ Section -->
+    <section class="py-20 @Model.BackgroundColor">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center mb-16 animate-slide-up">
+                @if (!string.IsNullOrWhiteSpace(Model.Title))
+                {
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">@Model.Title</h2>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.Description))
+                {
+                    <p class="text-lg text-gray-600">@Model.Description</p>
+                }
+            </div>
+            <div class="max-w-3xl mx-auto animate-slide-up">
+                @foreach (var item in Model.Items)
+                {
+                    <div class="faq-item border-b border-gray-200 py-5">
+                        @if (!string.IsNullOrWhiteSpace(item.Title))
+                        {
+                            <div class="flex justify-between items-center cursor-pointer">
+                                <h3 class="text-lg font-semibold text-gray-900">@item.Title
+                                </h3>
+                                <div class="w-6 h-6 flex items-center justify-center text-gray-500">
+                                    <i class="ri-add-line faq-icon-plus"></i>
+                                    <i class="ri-subtract-line faq-icon-minus"></i>
+                                </div>
+                            </div>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(item.Answer))
+                        {
+                            <div class="faq-content pt-4">
+                                <p class="text-gray-600">@item.Answer</p>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // FAQ accordion
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const header = item.querySelector('.flex.justify-between');
+                header.addEventListener('click', function () {
+                    item.classList.toggle('active');
+                });
+            });
+        });
+    </script>
+}

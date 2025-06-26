@@ -1,0 +1,14 @@
+﻿@model TextViewModel
+
+@if (!string.IsNullOrWhiteSpace(Model.Content))
+{
+    <section class="py-20 @Model.BackgroundColor">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="prose prose-lg max-w-none">
+                    @Html.Raw(Model.Content)
+                </div>
+            </div>
+        </div>
+    </section>
+}

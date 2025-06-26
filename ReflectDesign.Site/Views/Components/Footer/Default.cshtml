@@ -1,0 +1,105 @@
+﻿@model FooterViewModel
+
+<footer class="bg-gray-900 text-white pt-16 pb-8">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+            <div>
+                @if (Model.Logo is not null)
+                {
+                    <a href="/" class="block mb-6">
+                        <img src="@Model.Logo.Url" alt="@Model.Logo.AlternateText" class="h-16 w-auto">
+                    </a>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.Description))
+                {
+                    <p class="text-gray-400 mb-6">@Model.Description</p>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.EmailAddress) || !string.IsNullOrWhiteSpace(Model.PhoneNumber) ||
+                                !string.IsNullOrWhiteSpace(Model.Address))
+                {
+                    <div class="space-y-3 mb-6">
+                        @if (!string.IsNullOrWhiteSpace(Model.EmailAddress))
+                        {
+                            <div class="flex items-center text-gray-400">
+                                <i class="ri-mail-line mr-3"></i>
+                                <a href="mailto:@Model.EmailAddress"
+                                    class="hover:text-white transition-colors duration-200">@Model.EmailAddress</a>
+                            </div>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.PhoneNumber))
+                        {
+                            <div class="flex items-center text-gray-400">
+                                <i class="ri-phone-line mr-3"></i>
+                                <a href="tel:@Model.PhoneNumber"
+                                    class="hover:text-white transition-colors duration-200">@Model.PhoneNumber</a>
+                            </div>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.Address))
+                        {
+                            <div class="flex items-start text-gray-400">
+                                <i class="ri-map-pin-line mr-3 mt-1"></i>
+                                <span>@Model.Address</span>
+                            </div>
+                        }
+                    </div>
+                }
+                @if (Model.SocialIcons is not null && Model.SocialIcons.Any())
+                {
+                    <div class="flex space-x-4">
+                        @foreach (var socialIcon in Model.SocialIcons)
+                        {
+                            @if (!string.IsNullOrWhiteSpace(socialIcon.Link))
+                            {
+                                <a href="@socialIcon.Link"
+                                    class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition-colors duration-200">
+                                    <i class="ri-@socialIcon.Icon-fill"></i>
+                                </a>
+                            }
+                        }
+                    </div>
+                }
+            </div>
+            @if (Model.Columns is not null && Model.Columns.Any())
+            {
+                foreach (var column in Model.Columns)
+                {
+                    <div>
+                        @if (!string.IsNullOrWhiteSpace(column.Title))
+                        {
+                            <h4 class="text-xl font-semibold mb-6">@column.Title</h4>
+                        }
+                        @if (column.Links is not null && column.Links.Any())
+                        {
+                            <ul class="space-y-3">
+                                @foreach (var link in column.Links)
+                                {
+                                    if (link is not null)
+                                    {
+                                        <li><a href="@link.Url" class="text-gray-400 hover:text-white transition-colors duration-200">@link.Name</a></li>
+                                    }
+                                }
+                            </ul>
+                        }
+                    </div>
+                }
+            }
+        </div>
+        <div class="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
+            @if (Model.BottomLinks is not null && Model.BottomLinks.Any())
+            {
+                <div class="flex space-x-6 mb-4 md:mb-0">
+                @foreach (var link in Model.BottomLinks)
+                {
+                    <a href="@link.Url" class="text-gray-400 hover:text-white transition-colors duration-200">@link.Name</a>
+                }
+            </div>
+            }
+            @if (!string.IsNullOrWhiteSpace(Model.Copyright))
+            {
+                <div class="text-gray-400">
+                &copy; @Model.Copyright
+            </div>
+            }
+        </div>
+    </div>
+</footer>

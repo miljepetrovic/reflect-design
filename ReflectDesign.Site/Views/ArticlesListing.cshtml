@@ -1,0 +1,281 @@
+﻿@inherits UmbracoViewPage<ArticlesListingViewModel>
+
+<div class="bg-gradient-to-r from-blue-50 to-blue-100/50 py-20 mt-16">
+	<div class="container mx-auto px-4">
+		<div class="max-w-4xl mx-auto text-center">
+			@if (!string.IsNullOrWhiteSpace(Model.Surtitle))
+			{
+				<span class="text-primary font-semibold uppercase tracking-wider">@Model.Surtitle</span>
+			}
+			@if (!string.IsNullOrWhiteSpace(Model.Title))
+			{
+				<h1 class="text-4xl md:text-5xl font-bold text-gray-900 mt-4 mb-6">@Model.Title</h1>
+			}
+			@if (!string.IsNullOrWhiteSpace(Model.Description))
+			{
+				<p class="text-lg text-gray-600">@Model.Description</p>
+			}
+			<!-- News Filters -->
+			<div class="mt-12 bg-white rounded-lg shadow-md p-6">
+				<div class="grid grid-cols-1 gap-4">
+					@if (Model.Categories.Any())
+					{
+						<!-- Category Filter -->
+						<div class="relative">
+							<button id="categoryFilter"
+								class="w-full bg-white border border-gray-200 px-4 py-2 !rounded-button font-medium text-left flex items-center justify-between hover:border-primary transition-colors duration-200">
+								<span class="flex items-center">
+									<div class="w-5 h-5 flex items-center justify-center mr-2">
+										<i class="ri-filter-line"></i>
+									</div>
+									<span id="selectedCategory">Sve kategorije</span>
+								</span>
+								<div class="w-5 h-5 flex items-center justify-center">
+									<i class="ri-arrow-down-s-line"></i>
+								</div>
+							</button>
+							<div id="categoryDropdown"
+								class="hidden absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-20">
+								<div class="p-2 space-y-1">
+									<button class="w-full text-left px-4 py-2 rounded hover:bg-gray-50 category-option"
+										data-category="">Sve kategorije</button>
+									@foreach (var category in Model.Categories)
+									{
+										<button class="w-full text-left px-4 py-2 rounded hover:bg-gray-50 category-option"
+											data-category="@category">@category</button>
+									}
+								</div>
+							</div>
+						</div>
+					}
+					<!-- Date Range Filter -->
+					@* <div class="relative">
+						<button id="dateFilter"
+							class="w-full bg-white border border-gray-200 px-4 py-2 !rounded-button font-medium text-left flex items-center justify-between hover:border-primary transition-colors duration-200">
+							<span class="flex items-center">
+								<div class="w-5 h-5 flex items-center justify-center mr-2">
+									<i class="ri-calendar-line"></i>
+								</div>
+								<span id="selectedDate">All Time</span>
+							</span>
+							<div class="w-5 h-5 flex items-center justify-center">
+								<i class="ri-arrow-down-s-line"></i>
+							</div>
+						</button>
+						<div id="dateDropdown"
+							class="hidden absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-20">
+							<div class="p-2 space-y-1">
+								<button class="w-full text-left px-4 py-2 rounded hover:bg-gray-50 date-option"
+									data-range="all">All Time</button>
+								<button class="w-full text-left px-4 py-2 rounded hover:bg-gray-50 date-option"
+									data-range="today">Today</button>
+								<button class="w-full text-left px-4 py-2 rounded hover:bg-gray-50 date-option"
+									data-range="week">This Week</button>
+								<button class="w-full text-left px-4 py-2 rounded hover:bg-gray-50 date-option"
+									data-range="month">This Month</button>
+								<button class="w-full text-left px-4 py-2 rounded hover:bg-gray-50 date-option"
+									data-range="year">This Year</button>
+							</div>
+						</div>
+					</div> *@
+
+				</div>
+			</div>
+			<!-- News Grid -->
+			<div id="newsGrid" class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+				<!-- News items will be dynamically inserted here -->
+			</div>
+			<!-- Pagination -->
+			<div class="mt-12 flex justify-center items-center space-x-4">
+				<button id="prevPage"
+					class="bg-white border border-gray-200 px-4 py-2 !rounded-button font-medium hover:border-primary hover:text-primary transition-colors duration-200 whitespace-nowrap flex items-center disabled:opacity-50 disabled:cursor-not-allowed">
+					<div class="w-5 h-5 flex items-center justify-center mr-2">
+						<i class="ri-arrow-left-line"></i>
+					</div>
+					Previous
+				</button>
+				<div class="flex items-center space-x-2" id="pageNumbers">
+					<!-- Page numbers will be dynamically inserted here -->
+				</div>
+				<button id="nextPage"
+					class="bg-white border border-gray-200 px-4 py-2 !rounded-button font-medium hover:border-primary hover:text-primary transition-colors duration-200 whitespace-nowrap flex items-center disabled:opacity-50 disabled:cursor-not-allowed">
+					Next
+					<div class="w-5 h-5 flex items-center justify-center ml-2">
+						<i class="ri-arrow-right-line"></i>
+					</div>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		let newsData = [];
+		let filteredNews = [];
+		let currentPage = 1;
+		const itemsPerPage = 6;
+		let currentCategory = '';
+		@* let currentDateRange = 'all'; *@
+
+			filterAndDisplayNews();
+		fetch('/umbraco/surface/articlessurface/getall')
+			.then(res => res.json())
+			.then(data => {
+				newsData = data;
+				filteredNews = newsData;
+				currentPage = 1;
+				displayNews();
+				updatePagination();
+			});
+
+		// Filter handlers
+		const categoryFilter = document.getElementById('categoryFilter');
+		const categoryDropdown = document.getElementById('categoryDropdown');
+		@* const dateFilter = document.getElementById('dateFilter'); *@
+			@* const dateDropdown = document.getElementById('dateDropdown'); *@
+			// Toggle dropdowns
+			categoryFilter.addEventListener('click', () => {
+				categoryDropdown.classList.toggle('hidden');
+				@* dateDropdown.classList.add('hidden'); *@
+			});
+		@* dateFilter.addEventListener('click', () => {
+			dateDropdown.classList.toggle('hidden');
+			categoryDropdown.classList.add('hidden');
+		}); *@
+			// Close dropdowns when clicking outside
+			document.addEventListener('click', (e) => {
+				if (!e.target.closest('#categoryFilter') && !e.target.closest('#categoryDropdown')) {
+					categoryDropdown.classList.add('hidden');
+				}
+				@* if (!e.target.closest('#dateFilter') && !e.target.closest('#dateDropdown')) {
+				dateDropdown.classList.add('hidden');
+			} *@
+		});
+		// Category filter
+		document.querySelectorAll('.category-option').forEach(option => {
+			option.addEventListener('click', () => {
+				currentCategory = option.dataset.category;
+				document.getElementById('selectedCategory').textContent = option.textContent;
+				categoryDropdown.classList.add('hidden');
+				filterAndDisplayNews();
+			});
+		});
+		@* // Date filter
+		document.querySelectorAll('.date-option').forEach(option => {
+			option.addEventListener('click', () => {
+				currentDateRange = option.dataset.range;
+				document.getElementById('selectedDate').textContent = option.textContent;
+				dateDropdown.classList.add('hidden');
+				filterAndDisplayNews();
+			});
+		}); *@
+
+			@* function filterNewsByDate(news, range) {
+			const today = new Date();
+			const newsDate = new Date(news.date);
+			switch (range) {
+				case 'today':
+					return newsDate.toDateString() === today.toDateString();
+				case 'week':
+					const weekAgo = new Date(today.setDate(today.getDate() - 7));
+					return newsDate >= weekAgo;
+				case 'month':
+					return newsDate.getMonth() === today.getMonth() && newsDate.getFullYear() === today.getFullYear();
+				case 'year':
+					return newsDate.getFullYear() === today.getFullYear();
+				default:
+					return true;
+			}
+		} *@
+			function filterAndDisplayNews() {
+				@* filteredNews = newsData.filter(news => {
+					@* const matchesCategory = currentCategory === 'all' || news.category === currentCategory; *@
+					@* const matchesDate = filterNewsByDate(news, currentDateRange); *@
+					@* return matchesCategory && matchesDate; *@
+					@* const matchesCategory = currentCategory === 'all' || news.category === currentCategory;
+					return matchesCategory;
+				}); *@ 
+
+
+					fetch('/umbraco/surface/articlessurface/getall?category=' + currentCategory)
+						.then(res => res.json())
+						.then(data => {
+							newsData = data;
+							filteredNews = newsData;
+							currentPage = 1;
+							displayNews();
+							updatePagination();
+						});
+			}
+		function displayNews() {
+			const newsGrid = document.getElementById('newsGrid');
+			const startIndex = (currentPage - 1) * itemsPerPage;
+			const endIndex = startIndex + itemsPerPage;
+			const currentNews = filteredNews.slice(startIndex, endIndex);
+			newsGrid.innerHTML = currentNews.map(news => `
+<div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+<img src="${news.image}" alt="${news.title}" class="w-full h-48 object-cover">
+<div class="p-6">
+<div class="flex items-center justify-between mb-4">
+<span class="text-sm text-primary font-medium">${news.category}</span>
+<span class="text-sm text-gray-500">${new Date(news.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+</div>
+<h3 class="text-xl font-semibold text-gray-900 mb-2">${news.title}</h3>
+<p class="text-gray-600 mb-4">${news.summary}</p>
+<a href="${news.link}"  target="_blank" class="text-primary font-medium hover:underline flex items-center">
+Saznaj više
+<div class="w-5 h-5 flex items-center justify-center ml-1">
+<i class="ri-arrow-right-line"></i>
+</div>
+</a>
+</div>
+</div>
+`).join('');
+		}
+		function updatePagination() {
+			const totalPages = Math.ceil(filteredNews.length / itemsPerPage);
+			const prevButton = document.getElementById('prevPage');
+			const nextButton = document.getElementById('nextPage');
+			const pageNumbers = document.getElementById('pageNumbers');
+			prevButton.disabled = currentPage === 1;
+			nextButton.disabled = currentPage === totalPages;
+			pageNumbers.innerHTML = '';
+			for (let i = 1; i <= totalPages; i++) {
+				const pageButton = document.createElement('button');
+				pageButton.className = `w-8 h-8 flex items-center justify-center rounded-full ${currentPage === i ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-50'
+					}`;
+				pageButton.textContent = i;
+				pageButton.addEventListener('click', () => {
+					currentPage = i;
+					displayNews();
+					updatePagination();
+				});
+				pageNumbers.appendChild(pageButton);
+			}
+		}
+		// Pagination handlers
+		document.getElementById('prevPage').addEventListener('click', () => {
+			if (currentPage > 1) {
+				currentPage--;
+				displayNews();
+				updatePagination();
+			}
+		});
+		document.getElementById('nextPage').addEventListener('click', () => {
+			const totalPages = Math.ceil(filteredNews.length / itemsPerPage);
+			if (currentPage < totalPages) {
+				currentPage++;
+				displayNews();
+				updatePagination();
+			}
+		});
+		// Initial display
+		filterAndDisplayNews();
+		// News banner close button
+		const newsBanner = document.querySelector('.bg-primary');
+		const closeButton = newsBanner.querySelector('button');
+		closeButton.addEventListener('click', () => {
+			newsBanner.style.display = 'none';
+		});
+	});
+</script>
